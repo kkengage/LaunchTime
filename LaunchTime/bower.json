@@ -2,7 +2,7 @@
   "name": "LaunchTime",
   "dependencies": {
     "angular": "1.5.8",
-    "angular-ui-router": "0.2.15",
+    "angular-ui-router": "0.3.2",
     "angular-toastr": "1.7.0",
     "jQuery": "2.2.0",
     "fastclick": "1.0.6",

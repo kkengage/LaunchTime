@@ -1,13 +1,27 @@
-﻿
+﻿/// <reference path="../../models/order.ts" />
+/// <reference path="../../models/item.ts" />
+/// <reference path="../../services/printer/printer.ts" />
+/// <reference path="../../services/printer/printerservice.ts" />
+/// <reference path="../../appmain/app.ts" />
+/// <reference path="../../authorization/services/authservice.ts" />
+
+
 class MainViewController {
 
-    static $inject = ["$scope", "PrinterService"]
+    static $inject = ["$scope", "PrinterService", "AuthService"]
 
-    constructor($scope, printerService: Printer.PrinterService) {
-        alert("CREATING SERVICE");
+    constructor($scope, printerService: Printer.PrinterService, authService: Authorization.AuthService) {        
         $scope.txt = "EEEE";
+        $scope.logged = "none";
+
 
         $scope.printerStatus = printerService.PrinterStatus;
+
+        $scope.login = function () {
+            authService.Login().then(function (val) {
+                $scope.logged = val ? "zalogowany!" : "blad";
+            });
+        }
 
         $scope.print = function () {
             printerService.PrintOrder(<Models.Order>{

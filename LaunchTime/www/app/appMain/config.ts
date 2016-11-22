@@ -1,3 +1,3 @@
 ﻿var Configuration = {
-    ServiceLocation: "http://localhost/BDOSK.WebApi/api/",        
+    ServiceLocation: "http://paluszkilizac.herokuapp.com/apio/",        
 };

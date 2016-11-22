@@ -1,8 +1,19 @@
+/// <reference path="../../models/order.ts" />
+/// <reference path="../../models/item.ts" />
+/// <reference path="../../services/printer/printer.ts" />
+/// <reference path="../../services/printer/printerservice.ts" />
+/// <reference path="../../appmain/app.ts" />
+/// <reference path="../../authorization/services/authservice.ts" />
 var MainViewController = (function () {
-    function MainViewController($scope, printerService) {
-        alert("CREATING SERVICE");
+    function MainViewController($scope, printerService, authService) {
         $scope.txt = "EEEE";
+        $scope.logged = "none";
         $scope.printerStatus = printerService.PrinterStatus;
+        $scope.login = function () {
+            authService.Login().then(function (val) {
+                $scope.logged = val ? "zalogowany!" : "blad";
+            });
+        };
         $scope.print = function () {
             printerService.PrintOrder({
                 Id: "1",
@@ -30,7 +41,7 @@ var MainViewController = (function () {
             });
         };
     }
-    MainViewController.$inject = ["$scope", "PrinterService"];
+    MainViewController.$inject = ["$scope", "PrinterService", "AuthService"];
     return MainViewController;
 })();
 app.controller('mainViewController', MainViewController);

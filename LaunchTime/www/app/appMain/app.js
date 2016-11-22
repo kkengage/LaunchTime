@@ -1,6 +1,5 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 /// <reference path="../../../typings/serial/serial.d.ts" />
-alert("STARTING ANGULAR");
 var app = angular.module('launch', ['ui.router', 'toastr']);
 app.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/main");

@@ -1,0 +1,1 @@
+{"version":3,"file":"TokenData.js","sourceRoot":"","sources":["TokenData.ts"],"names":["Authorization","Authorization.TokenData","Authorization.TokenData.constructor"],"mappings":"AAAA,IAAO,aAAa,CASnB;AATD,WAAO,aAAa,EAAC,CAAC;IAElBA;QAAAC;QAKAC,CAACA;QAADD,gBAACA;IAADA,CAACA,AALDD,IAKCA;IALYA,uBAASA,YAKrBA,CAAAA;AAELA,CAACA,EATM,aAAa,KAAb,aAAa,QASnB"}
