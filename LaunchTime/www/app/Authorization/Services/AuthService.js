@@ -1,6 +1,7 @@
 /// <reference path="authstorage.ts" />
 /// <reference path="../../appmain/config.ts" />
 /// <reference path="../models/tokendata.ts" />
+/// <reference path="../../appmain/app.ts" />
 var Authorization;
 (function (Authorization) {
     var AuthService = (function () {

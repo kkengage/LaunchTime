@@ -5,13 +5,22 @@
 /// <reference path="../../appmain/app.ts" />
 /// <reference path="../../authorization/services/authservice.ts" />
 var MainViewController = (function () {
-    function MainViewController($scope, printerService, authService) {
+    function MainViewController($scope, printerService, authService, $injector) {
         $scope.txt = "EEEE";
         $scope.logged = "none";
         $scope.printerStatus = printerService.PrinterStatus;
         $scope.login = function () {
             authService.Login().then(function (val) {
                 $scope.logged = val ? "zalogowany!" : "blad";
+            });
+        };
+        $scope.test = function () {
+            alert("tttt");
+            var http = $injector.get("$http");
+            return http.get(Configuration.ServiceLocation + "report/between/20140302T0003Z/20170302T0003Z").then(function (res) {
+                // utworzenie tokenu               
+                alert(res.data);
+                return true;
             });
         };
         $scope.print = function () {
@@ -41,7 +50,7 @@ var MainViewController = (function () {
             });
         };
     }
-    MainViewController.$inject = ["$scope", "PrinterService", "AuthService"];
+    MainViewController.$inject = ["$scope", "PrinterService", "AuthService", "$injector"];
     return MainViewController;
 })();
 app.controller('mainViewController', MainViewController);

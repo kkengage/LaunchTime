@@ -8,9 +8,9 @@
 
 class MainViewController {
 
-    static $inject = ["$scope", "PrinterService", "AuthService"]
+    static $inject = ["$scope", "PrinterService", "AuthService", "$injector"]
 
-    constructor($scope, printerService: Printer.PrinterService, authService: Authorization.AuthService) {        
+    constructor($scope, printerService: Printer.PrinterService, authService: Authorization.AuthService, $injector) {        
         $scope.txt = "EEEE";
         $scope.logged = "none";
 
@@ -22,6 +22,18 @@ class MainViewController {
                 $scope.logged = val ? "zalogowany!" : "blad";
             });
         }
+
+        $scope.test = function () {
+            alert("tttt");
+            var http = $injector.get("$http");
+            return http.get(Configuration.ServiceLocation + "report/between/20140302T0003Z/20170302T0003Z").then((res) => {
+
+                // utworzenie tokenu               
+                alert(res.data);                
+                return true;
+            });
+        }
+
 
         $scope.print = function () {
             printerService.PrintOrder(<Models.Order>{

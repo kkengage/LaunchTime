@@ -1,6 +1,7 @@
 ﻿/// <reference path="authstorage.ts" />
 /// <reference path="../../appmain/config.ts" />
 /// <reference path="../models/tokendata.ts" />
+/// <reference path="../../appmain/app.ts" />
 
 module Authorization {
     export class AuthService {

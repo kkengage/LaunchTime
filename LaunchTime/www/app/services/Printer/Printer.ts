@@ -74,7 +74,6 @@ namespace Printer {
             } catch (ex) {
                 alert("ERRR: " + ex);
             }
-
         }
 
         dispose() {
