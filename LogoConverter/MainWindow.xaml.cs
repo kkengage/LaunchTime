@@ -44,7 +44,9 @@ namespace LogoConverter
                     var width = (int)Math.Ceiling((bmp.Width / 8d)) * 8;
                     for (var y = 0; y < height; y++)
                     {
-                        sb.Append("{ ");
+                        //"\"" +
+                        var wx = (width / 8).ToString("X").Length < 2 ? "0" : "";
+                        sb.Append( "1D2A" + wx + (width / 8).ToString("X") + "01");
                         for (var x = 0; x < width; x++)
                         {
                             licz++;
@@ -53,11 +55,10 @@ namespace LogoConverter
                                 if ((y * 8) + c < bmp.Height && x < bmp.Width)
                                     b += bmp.GetPixel(x, (y * 8) + c).R < minBrightnss ? (1 << (7 - c)) : 0;
 
-                            if (x > 0) sb.Append(",");
-                            sb.Append(b.ToString());
+                            //if (x > 0) sb.Append(",");                           
+                            sb.Append((b.ToString("X").Length < 2 ? "0" : "") + b.ToString("X"));
                         }
-                        sb.Append("},\r\n");
-
+                        sb.Append("1D2F03"); // + "\",\r\n");
                     }
                     textBox.Text = sb.ToString();
                     MessageBox.Show(licz.ToString());
