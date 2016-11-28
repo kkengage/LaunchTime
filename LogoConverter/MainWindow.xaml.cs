@@ -30,7 +30,7 @@ namespace LogoConverter
         private void button_Click(object sender, RoutedEventArgs e)
         {
             try
-            {               
+            {
                 var minBrightnss = 128;
                 var sb = new StringBuilder();
                 var of = new OpenFileDialog();
@@ -38,17 +38,29 @@ namespace LogoConverter
                 var f = of.ShowDialog();
                 if (f.HasValue && f.Value == true)
                 {
+                    var licz = 0;
                     Bitmap bmp = new Bitmap(of.FileName);
-                    for (var x = 0; x < bmp.Width; x++)
-                        for (var y = 0; y < (int)(bmp.Height / 8); y++)
+                    var height = (int)Math.Ceiling((bmp.Height / 8d));
+                    var width = (int)Math.Ceiling((bmp.Width / 8d)) * 8;
+                    for (var y = 0; y < height; y++)
+                    {
+                        sb.Append("{ ");
+                        for (var x = 0; x < width; x++)
                         {
+                            licz++;
                             var b = 0;
                             for (var c = 0; c < 8; c++)
-                                b += bmp.GetPixel(x, y + c).R > minBrightnss ? (1 << c) : 0;
-                            if (sb.Length > 0) sb.Append(",");
+                                if ((y * 8) + c < bmp.Height && x < bmp.Width)
+                                    b += bmp.GetPixel(x, (y * 8) + c).R < minBrightnss ? (1 << (7 - c)) : 0;
+
+                            if (x > 0) sb.Append(",");
                             sb.Append(b.ToString());
                         }
+                        sb.Append("},\r\n");
+
+                    }
                     textBox.Text = sb.ToString();
+                    MessageBox.Show(licz.ToString());
                 }
 
             }

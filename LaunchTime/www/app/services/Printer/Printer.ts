@@ -22,11 +22,10 @@ namespace Printer {
                 (<Serial>serial).requestPermission({}, function () {
                     Printer.HasPremission = true;
                     serial.open({}, function () { Printer.IsOpen = true; deffered.resolve(serial); }, function (msg) { alert("nie udało sie połączyć do drukarki: " + msg); deffered.reject(); });
-                }, function () {
+                }, function (msg) {
+                    alert("no premission: " + msg);
                     deffered.reject();
                 });
-
-                alert("pozniej");
             } else {
                 deffered.resolve(serial);
             }
@@ -37,7 +36,7 @@ namespace Printer {
         Close(): JQueryPromise<boolean> {
             var deffered = $.Deferred<boolean>();
             var _self = this;
-
+            
             if (Printer.HasPremission) {
                 if (Printer.IsOpen) {
                     try {
@@ -68,10 +67,11 @@ namespace Printer {
         PrintText(msg: string) {
             try {
                 this.printer()
-                    .done(function (printer) {                                                   
-                            printer.write(msg, function () { }, function () { alert("dupa"); });                       
+                    .done(function (printer) {
+                        printer.writeHex("575757", function () { }, function () { alert("dupa"); });                       
+                        printer.writeHex("\r\n", function () { }, function () { alert("dupa"); });                       
                     })
-                    .fail(function () { alert("permision failed"); });
+                    .fail(function (msg) { alert("permision failed " + msg); });
             } catch (ex) {
                 alert("ERRR: " + ex);
             }
