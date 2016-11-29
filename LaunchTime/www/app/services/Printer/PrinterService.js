@@ -8,7 +8,6 @@ var Printer;
         function PrinterService($q) {
             this.$q = $q;
             this.PrinterStatus = "Disconnected";
-            alert("CONSTRUCT");
             this._printer = new Printer.Printer();
         }
         PrinterService.prototype.PrintOrder = function (order) {
@@ -16,10 +15,10 @@ var Printer;
             return this.$q(function (resolve, reject) {
                 /// drukuj dlugo....
                 try {
-                    _self._printer.PrintText("test dzialania \r\n\n\r");
+                    _self._printer.PrintLogo().done(function () { alert("wydrukowano"); }).fail(function (msg) { alert("blad wydruku logo\r\n" + msg); });
                 }
                 catch (ex) {
-                    alert("ZLAPANO EX: " + ex);
+                    reject("Blad wydruku zamówienia!\r\n" + ex.toString());
                 }
             });
         };

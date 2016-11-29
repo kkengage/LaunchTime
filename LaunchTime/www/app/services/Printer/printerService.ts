@@ -11,24 +11,22 @@ namespace Printer {
         private _printer: Printer;
 
         constructor(private $q: angular.IQService) {
-            alert("CONSTRUCT");
             this._printer = new Printer();
         }
 
         PrinterStatus: string = "Disconnected";
 
 
-        PrintOrder(order: Models.Order): angular.IPromise<boolean> {            
+        PrintOrder(order: Models.Order): angular.IPromise<string> {
             var _self = this;
             return this.$q(function (resolve, reject) {
                 /// drukuj dlugo....
                 try {
-                    _self._printer.PrintText("test dzialania \r\n\n\r");
+                    _self._printer.PrintLogo().done(() => { alert("wydrukowano") }).fail((msg) => { alert("blad wydruku logo\r\n" + msg); });
                     //alert("PRINTINTG ORDER");
                     //resolve(true);
                 } catch (ex) {
-                    alert("ZLAPANO EX: " + ex);
-                    //reject(false);
+                    reject("Blad wydruku zamówienia!\r\n" + ex.toString());                    
                 }
             });
         }
