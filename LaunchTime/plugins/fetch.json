@@ -22,5 +22,21 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-statusbar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-statusbar@2.2.0"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "org.apache.cordova.signal-strength": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-signal-strength"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

@@ -5,7 +5,8 @@ namespace Models {
 
     export class Order {
         public Id: string;                
-        public Date: string;
+        public Date: string;        
+        public Hour: string;        
         public Client: Client;
         public Accepted: boolean;
         public Items: Item[];        

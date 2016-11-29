@@ -8,6 +8,7 @@ var MainViewController = (function () {
     function MainViewController($scope, printerService, authService, $injector) {
         $scope.txt = "EEEE";
         $scope.logged = "none";
+        $scope.signal = 0;
         $scope.printerStatus = printerService.PrinterStatus;
         $scope.login = function () {
             authService.Login().then(function (val) {
@@ -15,18 +16,18 @@ var MainViewController = (function () {
             });
         };
         $scope.test = function () {
-            alert("tttt");
             var http = $injector.get("$http");
-            return http.get(Configuration.ServiceLocation + "report/between/20140302T0003Z/20170302T0003Z").then(function (res) {
+            return http.get(Configuration.ServiceLocation + "orders/new").success(function (res) {
                 // utworzenie tokenu               
-                alert(res.data);
+                alert(res);
                 return true;
-            });
+            }).error(function (msg) { return alert("blad http: " + msg); });
         };
         $scope.print = function () {
             printerService.PrintOrder({
                 Id: "1",
-                Date: "2016-01-10",
+                Date: "2016-01-01",
+                Hour: "14:00",
                 Accepted: true,
                 Client: {
                     Address: "Tarnów, Brodzińskiego 17",

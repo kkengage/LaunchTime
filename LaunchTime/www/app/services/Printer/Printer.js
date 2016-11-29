@@ -81,7 +81,7 @@ var Printer;
                     _self.prnt = printer;
                     _self.printLogo();
                 })
-                    .fail(function (msg) { Printer._error = true; _self.qDef.reject("Nie połączono z drukarką!\r\n" + msg); });
+                    .fail(function (msg) { Printer._error = true; _self.qDef.reject("Nie połączono z drukarką!\r\n"); });
             }
             catch (ex) {
                 Printer._error = true;

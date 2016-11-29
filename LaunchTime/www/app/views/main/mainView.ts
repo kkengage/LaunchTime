@@ -10,10 +10,10 @@ class MainViewController {
 
     static $inject = ["$scope", "PrinterService", "AuthService", "$injector"]
 
-    constructor($scope, printerService: Printer.PrinterService, authService: Authorization.AuthService, $injector) {        
+    constructor($scope, printerService: Printer.PrinterService, authService: Authorization.AuthService, $injector) {
         $scope.txt = "EEEE";
         $scope.logged = "none";
-
+        $scope.signal = 0;
 
         $scope.printerStatus = printerService.PrinterStatus;
 
@@ -23,22 +23,21 @@ class MainViewController {
             });
         }
 
-        $scope.test = function () {
-            alert("tttt");
-            var http = $injector.get("$http");
-            return http.get(Configuration.ServiceLocation + "report/between/20140302T0003Z/20170302T0003Z").then((res) => {
-
+        $scope.test = function () {            
+            var http: angular.IHttpService = $injector.get("$http");
+            return http.get(Configuration.ServiceLocation + "orders/new").success((res: any) => {
                 // utworzenie tokenu               
-                alert(res.data);                
+                alert(res);
                 return true;
-            });
+            }).error((msg) => alert("blad http: " + msg));
         }
 
-
+       
         $scope.print = function () {
             printerService.PrintOrder(<Models.Order>{
                 Id: "1",
-                Date: "2016-01-10",
+                Date: "2016-01-01",
+                Hour: "14:00",
                 Accepted: true,
                 Client: <Models.Client>{
                     Address: "Tarnów, Brodzińskiego 17",

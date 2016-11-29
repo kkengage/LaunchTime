@@ -12,14 +12,16 @@ module Authorization {
         constructor(private $injector, private authStorage: AuthStorage, private $interval: angular.IIntervalService) { }
 
         /// Logowanie
-        Login(): angular.IPromise<boolean> {            
-            var http = this.$injector.get("$http");
-            return http.post(Configuration.ServiceLocation + "tokens", {"access_token": "token123"}).then((res) => {
-
+        Login(): angular.IPromise<any> {
+            var http: angular.IHttpService = this.$injector.get("$http");
+            var _self = this;
+            // token powinien byc device serial number device.serial
+            return http.post(Configuration.ServiceLocation + "tokens", { "access_token": "token123" }).success((res: any) => {
                 // utworzenie tokenu
-                var token = <TokenData>res.data;                
-                this.authStorage.Set("tokenData", token);             
-                return true;
+                var token = <TokenData>res;
+                _self.authStorage.Set("tokenData", token);                
+            }).error((msg) => {
+                alert("error returned " + msg);
             });
         };
 

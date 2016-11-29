@@ -9,11 +9,12 @@ module LaunchTime {
         export function initialize() {
             document.addEventListener('deviceready', onDeviceReady, false);
         }
-
+        
         function onDeviceReady() {
             // Handle the Cordova pause and resume events
             document.addEventListener('pause', onPause, false);
-            document.addEventListener('resume', onResume, false);            
+            document.addEventListener('resume', onResume, false);       
+            //window.StatusBar.hide();            
             // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
             //var parentElement = document.getElementById('deviceready');
             //var listeningElement = parentElement.querySelector('.listening');
@@ -24,10 +25,12 @@ module LaunchTime {
 
         function onPause() {
             // TODO: This application has been suspended. Save application state here.
+            //window.StatusBar.show();
         }
 
         function onResume() {
             // TODO: This application has been reactivated. Restore application state here.
+            //window.StatusBar.hide();
         }
 
     }

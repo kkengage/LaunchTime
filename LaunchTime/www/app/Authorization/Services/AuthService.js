@@ -33,13 +33,15 @@ var Authorization;
         }
         /// Logowanie
         AuthService.prototype.Login = function () {
-            var _this = this;
             var http = this.$injector.get("$http");
-            return http.post(Configuration.ServiceLocation + "tokens", { "access_token": "token123" }).then(function (res) {
+            var _self = this;
+            // token powinien byc device serial number device.serial
+            return http.post(Configuration.ServiceLocation + "tokens", { "access_token": "token123" }).success(function (res) {
                 // utworzenie tokenu
-                var token = res.data;
-                _this.authStorage.Set("tokenData", token);
-                return true;
+                var token = res;
+                _self.authStorage.Set("tokenData", token);
+            }).error(function (msg) {
+                alert("error returned " + msg);
             });
         };
         ;

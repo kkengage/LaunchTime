@@ -37,4 +37,13 @@ app.config(function ($httpProvider) {
         function (auth) { return auth; }
     ]);
 });
+// catchowanie eventow
+app.run(function ($rootScope, $state, AUTH_EVENTS, AuthService) {
+    var goToLogin = function (event, args) {
+        AuthService.Login();
+        //$state.go('Login', { "returnToState": args.targetState });
+    };
+    $rootScope.$on(AUTH_EVENTS.notAuthenticated, goToLogin);
+    $rootScope.$on(AUTH_EVENTS.sessionTimeout, goToLogin);
+});
 //# sourceMappingURL=AuthInterceptor.js.map

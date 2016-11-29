@@ -86,7 +86,7 @@ namespace Printer {
                         _self.prnt = printer;
                         _self.printLogo();
                     })
-                    .fail((msg) => { Printer._error = true; _self.qDef.reject("Nie połączono z drukarką!\r\n" + msg); });
+                    .fail((msg) => { Printer._error = true; _self.qDef.reject("Nie połączono z drukarką!\r\n"); });
             } catch (ex) {
                 Printer._error = true;
                 this.qDef.reject("Błąd połączenia z drukarką!\r\n" + ex.toString());
