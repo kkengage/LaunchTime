@@ -24,11 +24,11 @@ namespace Printer {
                 /// drukuj dlugo....
                 try {
                     _self._printer.PrintText("test dzialania \r\n\n\r");
-                    alert("PRINTINTG ORDER");
-                    resolve(true);
+                    //alert("PRINTINTG ORDER");
+                    //resolve(true);
                 } catch (ex) {
                     alert("ZLAPANO EX: " + ex);
-                    reject(false);
+                    //reject(false);
                 }
             });
         }
