@@ -60,11 +60,13 @@ var Printer;
         Printer.prototype.PrintText = function (msg) {
             var deffered = $.Deferred();
             this.nr = 0;
+            this.qDef = deffered;
             try {
                 var _self = this;
                 this.printer()
                     .done(function (printer) {
-                    _self.printt(printer, deffered);
+                    _self.prnt = printer;
+                    _self.printt();
                 })
                     .fail(function (msg) { alert("permision failed " + msg); });
             }
@@ -73,39 +75,29 @@ var Printer;
             }
             return deffered;
         };
-        //function(printer) {
-        //    printer.write("Testb \r\n", function () { }, function (msg) { alert("lipa: " + msg); });
-        //}
-        Printer.prototype.printt = function (printer, q) {
-            var t = this.logo.substring(this.nr, this.nr + 2);
-            this.nr = this.nr + 2;
+        Printer.prototype.printt = function () {
+            var _this = this;
+            var t = this.logo.substring(this.nr, this.nr + 52);
+            this.nr = this.nr + 52;
             var _self = this;
-            var hex = _self.hex2a(t);
-            printer.writeHex(t, function () {
-                if (_self.nr < _self.logo.length - 1) {
-                    _self.printt(printer, q);
+            this.prnt.writeHex(t, function () { return _this.writeHexSuccess(_self); }, this.error);
+        };
+        Printer.prototype.error = function (msg) {
+            alert("lipa: " + msg);
+        };
+        Printer.prototype.writeHexSuccess = function (self) {
+            try {
+                if (self.nr < self.logo.length - 1) {
+                    self.printt();
                 }
                 else {
-                    q.resolve();
-                    printer.write("\r\n", function () { alert("koniec: "); }, function () { alert("blad"); });
-                    return;
+                    self.qDef.resolve();
+                    alert("koniec");
                 }
-            }, function (msg) { alert("lipa: " + msg); });
-        };
-        Printer.prototype.hex2a = function (hexx) {
-            var hex = hexx.toString(); //force conversion
-            var str = '';
-            for (var i = 0; i < hex.length; i += 2)
-                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-            return str;
-        };
-        Printer.prototype.a2hex = function (str) {
-            var arr = [];
-            for (var i = 0, l = str.length; i < l; i++) {
-                var hex = Number(str.charCodeAt(i)).toString(16);
-                arr.push(hex);
             }
-            return arr.join('');
+            catch (ex) {
+                alert(ex);
+            }
         };
         Printer.prototype.dispose = function () {
         };

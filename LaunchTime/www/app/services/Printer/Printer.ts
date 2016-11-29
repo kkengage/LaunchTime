@@ -64,16 +64,18 @@ namespace Printer {
             return deffered.promise();
         }
 
-        private nr = 0;    
+        private nr = 0;
         PrintText(msg: string): JQueryPromise<boolean> {
             var deffered = $.Deferred<boolean>();
             this.nr = 0;
+            this.qDef = deffered;
             try {
                 var _self = this;
-
                 this.printer()
                     .done(function (printer) {
-                        _self.printt(printer, deffered);
+                        _self.prnt = printer;
+                 
+                        _self.printt();
                     })
                     .fail(function (msg) { alert("permision failed " + msg); });
             } catch (ex) {
@@ -86,35 +88,30 @@ namespace Printer {
         //    printer.write("Testb \r\n", function () { }, function (msg) { alert("lipa: " + msg); });
         //}
 
-        printt(printer: Serial, q: JQueryDeferred<boolean>) {
-            var t = this.logo.substring(this.nr, this.nr + 2);
-            this.nr = this.nr + 2;
+        private prnt: Serial;
+        private qDef: JQueryDeferred<boolean>;
+        printt() {           
+            var t = this.logo.substring(this.nr, this.nr + 52);
+            this.nr = this.nr + 52;
             var _self = this;
-            var hex = _self.hex2a(t);        
-            printer.writeHex(t, function () {
-                if (_self.nr < _self.logo.length - 1) {
-                    _self.printt(printer, q);
+            this.prnt.writeHex(t, ()=> this.writeHexSuccess(_self), this.error);
+        }
+
+        error(msg) {
+            alert("lipa: " + msg);
+        }
+
+        writeHexSuccess(self: Printer) {
+            try {
+                if (self.nr < self.logo.length - 1) {             
+                    self.printt();
                 }
-                else { q.resolve(); printer.write("\r\n", function () { alert("koniec: "); }, function () { alert("blad"); }); return; }
-            }, function (msg) { alert("lipa: " + msg); });
-        }
-
-        hex2a(hexx) {
-            var hex = hexx.toString();//force conversion
-            var str = '';
-            for (var i = 0; i < hex.length; i += 2)
-                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-            return str;
-        }
-
-        a2hex(str) {
-            var arr = [];
-            for (var i = 0, l = str.length; i < l; i++) {
-                var hex = Number(str.charCodeAt(i)).toString(16);
-                arr.push(hex);
+                else { self.qDef.resolve(); alert("koniec"); }
+            } catch (ex) {
+                alert(ex);
             }
-            return arr.join('');
         }
+
 
         dispose() {
 
