@@ -66,28 +66,91 @@ namespace PrinterTest
             }
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+
+        public enum fontStyle
+        {
+            // Czcionka 9x17 zamiast 12x24 domyslnej
+            Small = 1,
+            Bold = 8,
+            // Poszerzona x 2
+            Height2 = 16,
+            // Podwyzszona x 2
+            Width2 = 32
+        }
+
+        /// <summary>
+        /// Ustawia czcionke
+        /// </summary>
+        /// <param name="style"></param>
+        private void SetFont(fontStyle style)
+        {
+            _port.Write((char)27 + "!" + (char)style);
+        }
+
+        private void SetInvertedColors(bool inverted)
+        {
+            //// czarno biale
+            _port.Write((char)29 + "B" + (char)(inverted ? 1 : 0));
+        }
+
+        /// <summary>
+        /// Ustawienia jak po uruchomieniu
+        /// </summary>
+        private void Reset()
         {
             _port.Write((char)27 + "@");
+        }
+
+        public enum textAlignment
+        {
+            left = 0,
+            center = 1,
+            right = 2
+        }
+
+        public void SetAlignment(textAlignment align)
+        {
+            _port.Write((char)27 + "a" + (char)align);
+        }
+
+        public enum Underline
+        {
+            none = 48,
+            thin = 49,
+            thick = 50
+        }
+
+        public void SetUnderline(Underline style)
+        {
+            _port.Write((char)27 + "-" + (char)style);
+        }
+
+        public void SetLeft(int charCount)
+        {
+            _port.Write((char)27 + "B" + (char)charCount);
+        }
 
 
-            //_port.Write("Test ");
-            //// ! - 1 - mniejsza, 8 pogrobienie , 16 higher, 32 - wider
-            ////_port.Write((char)27 + "!" + (char)4);
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            Reset();
+            SetFont(fontStyle.Height2);          
+            _port.Write("1234567890");
+            SetLeft(5);
+            SetAlignment(textAlignment.right);
+            _port.Write("1234567890\r\n");
+            _port.Write("1234567890\r\n");
+
+
 
             //_port.Write((char)27 + "-" + (char)2);
 
             //// 90 stopni drukowanie
             ////_port.Write((char)27 + "V" + (char)1);
 
-            //// wyrownanie 0 - lewa, 1 - srodek, 2 - prawa
-            _port.Write((char)27 + "a" + (char)1);
 
-            //// rozmiar 
-            //// _port.Write((char)29 + "!" + (char)18
 
-            //// czarno biale
-            ////_port.Write((char)29 + "B" + (char)1);
 
             //_port.Write("Test\r\n");
 
@@ -105,21 +168,22 @@ namespace PrinterTest
             //_port.Write((char)0xA1 + (char)PL.ą + (char)PL.Ć + (char)PL.ć + "\r\n");
 
 
-            for (int y = 0; y < logo.GetLength(0); y++)
-            {
-                var sb = new StringBuilder();
-                for (int i = 0; i < logo.GetLength(1); i++)
-                {
-                    var b = (logo[y, i]);
-                    sb.Append((char)b);
-                }
-                var lg = (char)29 + "*" + (char)logo.GetLength(0) + (char)1 + sb.ToString();
-                _port.Write(lg);
-                _port.Write((char)29 + "/" + (char)0);
-            }
 
-
-            _port.Write(" \r\n");
+            ////DRUKOWANIE OBRAZU
+            //for (int y = 0; y < logo.GetLength(0); y++)
+            //{
+            //    var sb = new StringBuilder();
+            //    for (int i = 0; i < logo.GetLength(1); i++)
+            //    {
+            //        var b = (logo[y, i]);
+            //        sb.Append((char)b);
+            //    }
+            //    var lg = (char)29 + "*" + (char)logo.GetLength(0) + (char)1 + sb.ToString();
+            //    _port.Write(lg);
+            //    _port.Write((char)29 + "/" + (char)0);
+            //}
+            //_port.Write(" \r\n");
+            ////DRUKOWANIE OBRAZU
         }
 
 

@@ -5,6 +5,30 @@
 namespace Printer {
     declare var serial;
 
+    //#region Style Enums
+    enum TextAlignment {
+        Left = 0,
+        Center = 1,
+        Right = 2
+    }
+
+    enum Underline {
+        None = 48,
+        Thin = 49,
+        Thick = 50
+    }
+
+    enum FontStyle {
+        // Czcionka 9x17 zamiast 12x24 domyslnej
+        Small = 1,
+        Bold = 8,
+        // Poszerzona x 2
+        Height2 = 16,
+        // Podwyzszona x 2
+        Width2 = 32
+    }
+    //#endregion
+
     // Rozszerza funckjonalność cache'a angularowego o expiry time
     export class Printer implements D.IDisposable {
 
@@ -46,7 +70,7 @@ namespace Printer {
                 if (Printer._isOpen) {
                     try {
                         (<Serial>serial).close(() => { Printer._isOpen = false; deffered.resolve(); }, () => { deffered.reject("Błąd podczas zamykania portu\r\n"); });
-                    } catch (ex) { deffered.reject("Nie można zamknac portu\r\n"+ex); }
+                    } catch (ex) { deffered.reject("Nie można zamknac portu\r\n" + ex); }
                 } else {
                     deffered.resolve();
                 }
@@ -120,6 +144,11 @@ namespace Printer {
             }
         }
         //#endregion
+
+
+
+
+
 
 
 
