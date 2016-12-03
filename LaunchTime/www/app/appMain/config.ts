@@ -1,3 +1,4 @@
 ﻿var Configuration = {
-    ServiceLocation: "http://paluszkilizac.herokuapp.com/apio/",        
+    ServiceLocation: "http://192.168.43.141:9000/apio/" // "http://paluszkilizac.herokuapp.com/apio/",        
+
 };

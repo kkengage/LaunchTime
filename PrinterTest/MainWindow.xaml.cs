@@ -46,18 +46,22 @@ namespace PrinterTest
             _port = new SerialPort();
             try
             {
-                _port.PortName = "COM5";
+                _port.PortName = "COM6";
                 _port.BaudRate = 9600;                   //9600
                 _port.DataBits = 8;                   //8
                 _port.StopBits = StopBits.One;                  //1
-                _port.Parity = Parity.Space;                    //None
-
-                _port.Encoding = Encoding.GetEncoding("iso-8859-1");
-                //  _port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
+                _port.Parity = Parity.Space;                    //None            
+                                                                // _port.Encoding = Encoding.GetEncoding("iso-8859-2");
+                                                                //  _port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
                 _port.Open();
-                //_port.DtrEnable = true;
-                //_port.RtsEnable = true;
+
+                _port.DtrEnable = false;
+                _port.RtsEnable = false;
                 _port.ReadExisting();
+                _port.ErrorReceived += _port_ErrorReceived;
+
+
+                read();
             }
             catch (Exception ex)
             {
@@ -66,6 +70,28 @@ namespace PrinterTest
             }
         }
 
+        private void read()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    MessageBox.Show("AAAAA");
+                    var i = _port.ReadByte();
+                    MessageBox.Show("ODCZYTANO: " + i);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("EX:" + ex.ToString());
+                    read();
+                }
+            });
+        }
+
+        private void _port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        {
+            MessageBox.Show(e.ToString());
+        }
 
         public enum fontStyle
         {
@@ -131,128 +157,44 @@ namespace PrinterTest
         }
 
 
-
+        // INIT
         private void button_Click(object sender, RoutedEventArgs e)
         {
             Reset();
-            SetFont(fontStyle.Height2);          
-            _port.Write("1234567890");
-            SetLeft(5);
-            SetAlignment(textAlignment.right);
-            _port.Write("1234567890\r\n");
-            _port.Write("1234567890\r\n");
 
+            _port.Write("" + (char)0x1b + (char)0x40);
+            _port.Write("" + (char)0x1d + (char)0x61 + (char)0x04);
+            _port.Write("TEST\r\n");
 
-
-            //_port.Write((char)27 + "-" + (char)2);
-
-            //// 90 stopni drukowanie
-            ////_port.Write((char)27 + "V" + (char)1);
-
-
-
-
-            //_port.Write("Test\r\n");
-
-            // character table
-            //_port.Write((char)27 + "t" + (char)30);
-            //// _port.Write(ConvertUTF8ToWin1250("ĄąĆćĘęŁłŃńÓóŚśŹźŻż\r\n"));
-
-
-            //_port.Write((char)29 + "H" + (char)2);
-
-            //GS k 73 10 123 66 78 111 46 123 67 12 34 56
-            //_port.Write((char)29 + "k" + (char)73 + (char)10 + (char)123 + (char)66 + (char)78
-            //    + (char)111 + (char)46 + (char)123 + (char)67 + (char)12 + (char)34 + (char)56);
-
-            //_port.Write((char)0xA1 + (char)PL.ą + (char)PL.Ć + (char)PL.ć + "\r\n");
-
-
-
-            ////DRUKOWANIE OBRAZU
-            //for (int y = 0; y < logo.GetLength(0); y++)
-            //{
-            //    var sb = new StringBuilder();
-            //    for (int i = 0; i < logo.GetLength(1); i++)
-            //    {
-            //        var b = (logo[y, i]);
-            //        sb.Append((char)b);
-            //    }
-            //    var lg = (char)29 + "*" + (char)logo.GetLength(0) + (char)1 + sb.ToString();
-            //    _port.Write(lg);
-            //    _port.Write((char)29 + "/" + (char)0);
-            //}
-            //_port.Write(" \r\n");
-            ////DRUKOWANIE OBRAZU
         }
 
 
+        // ZAPYTAJ
         private void button_Click1(object sender, RoutedEventArgs e)
         {
-            var sbp = new StringBuilder();
-            sbp.Append((char)27 + "@");
+            _port.Write("e\r\n");
+            //_port.Write("" + (char)0x1d + (char)0x72 + (char)0x0); // 1b 76 n 
+            //_port.Write("" + (char)0x1d + (char)0x72 + (char)0x1); // 1b 76 n 
+            //_port.Write("" + (char)0x1d + (char)0x72 + (char)0x30); // 1b 76 n 
+            //_port.Write("" + (char)0x1d + (char)0x72 + (char)0x31); // 1b 76 n 
+            //_port.Write("" + (char)0x1b + (char)0x76 + (char)0x0); // 1B 76 n 
+            //_port.Write("" + (char)0x1b + (char)0x76 + (char)0x1); // 1B 76 n 
+            //_port.Write("" + (char)0x1b + (char)0x76 + (char)0x30); // 1B 76 n 
+            _port.Write("" + (char)0x1b + (char)0x76 + (char)0x31); // 1B 76 n 
+            //_port.Write("e\r\n");
 
-
-            //sbp.Append("Test ");
-            //// ! - 1 - mniejsza, 8 pogrobienie , 16 higher, 32 - wider
-            ////sbp.Append((char)27 + "!" + (char)4);
-
-            //sbp.Append((char)27 + "-" + (char)2);
-
-            //// 90 stopni drukowanie
-            ////sbp.Append((char)27 + "V" + (char)1);
-
-            //// wyrownanie 0 - lewa, 1 - srodek, 2 - prawa
-            sbp.Append((char)27 + "a" + (char)1);
-
-            //// rozmiar 
-            //// sbp.Append((char)29 + "!" + (char)18
-
-            //// czarno biale
-            ////sbp.Append((char)29 + "B" + (char)1);
-
-            //sbp.Append("Test\r\n");
-
-            // character table
-            //sbp.Append((char)27 + "t" + (char)30);
-            //// sbp.Append(ConvertUTF8ToWin1250("ĄąĆćĘęŁłŃńÓóŚśŹźŻż\r\n"));
-
-
-            //sbp.Append((char)29 + "H" + (char)2);
-
-            //GS k 73 10 123 66 78 111 46 123 67 12 34 56
-            //sbp.Append((char)29 + "k" + (char)73 + (char)10 + (char)123 + (char)66 + (char)78
-            //    + (char)111 + (char)46 + (char)123 + (char)67 + (char)12 + (char)34 + (char)56);
-
-            //sbp.Append((char)0xA1 + (char)PL.ą + (char)PL.Ć + (char)PL.ć + "\r\n");
-
-
-            for (int y = 0; y < logo.GetLength(0); y++)
-            {
-                var sb = new StringBuilder();
-                for (int i = 0; i < logo.GetLength(1); i++)
-                {
-                    var b = (logo[y, i]);
-                    sb.Append((char)b);
-                }
-                var lg = (char)29 + "*" + (char)logo.GetLength(0) + (char)1 + sb.ToString();
-                sbp.Append(lg);
-                sbp.Append((char)29 + "/" + (char)0);
-            }
-
-
-            sbp.Append(" \r\n");
-
-            var txt = sbp.ToString();
-            var sb2 = new StringBuilder();
-            for (int i = 0; i < txt.Length; i++)
-            {
-                sb2.Append(((int)txt[i]).ToString("x2"));
-            }
-            MessageBox.Show(sb2.ToString());
-            Clipboard.SetText(sb2.ToString());
         }
 
+
+        //READ
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            var b = new byte[100];
+            textBox.Text = _port.BytesToRead.ToString();
+
+            //var readed = _port.Read(b, 0, 1);
+            //textBox.Text = readed + ": ";
+        }
 
 
 
@@ -266,6 +208,8 @@ namespace PrinterTest
 
             return win1252.GetString(output);
         }
+
+
     }
 
 

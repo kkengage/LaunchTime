@@ -4,18 +4,21 @@
 /// <reference path="../../services/printer/printerservice.ts" />
 /// <reference path="../../appmain/app.ts" />
 /// <reference path="../../authorization/services/authservice.ts" />
+/// <reference path="../../services/orders/ordersservice.ts" />
 
 
 class MainViewController {
 
-    static $inject = ["$scope", "PrinterService", "AuthService", "$injector"]
+    static $inject = ["$scope", "PrinterService", "AuthService", "$injector", "OrdersService"]
 
-    constructor($scope, printerService: Printer.PrinterService, authService: Authorization.AuthService, $injector) {
+    constructor($scope, printerService: Printer.PrinterService, authService: Authorization.AuthService, $injector, private ordersService: Orders.OrdersService) {
         $scope.txt = "EEEE";
         $scope.logged = "none";
         $scope.signal = 0;
-
+        $scope.status = Printer.Printer.Status;
         $scope.printerStatus = printerService.PrinterStatus;
+        var orders: Models.Order[] = new Array<Models.Order>();
+        $scope.orders = orders;
 
         $scope.login = function () {
             authService.Login().then(function (val) {
@@ -23,16 +26,32 @@ class MainViewController {
             });
         }
 
-        $scope.test = function () {            
-            var http: angular.IHttpService = $injector.get("$http");
-            return http.get(Configuration.ServiceLocation + "orders/new").success((res: any) => {
-                // utworzenie tokenu               
-                alert(res);
-                return true;
-            }).error((msg) => alert("blad http: " + msg));
+        $scope.test = function () {
+            ordersService.GetNewOrders().then((orders: Models.Order[]) => {
+                orders.forEach((o) => {               
+                    $scope.orders.push(o);
+                });
+            });
         }
 
-       
+        $scope.acceptOrder = function (order) {
+            ordersService.AcceptOrder(order.Id).then((resp) => {
+                if (resp) {
+                    order.accepted = true;
+                    printerService.PrintOrder(order);
+                } else {
+                    alert("ODRZUCONE");
+                }
+            });
+        }
+
+        setInterval(() => { $scope.status = Printer.Printer.Status; }, 500);
+
+
+        $scope.GetStatus = function () {
+            printerService.RefreshStatus();
+        }
+
         $scope.print = function () {
             printerService.PrintOrder(<Models.Order>{
                 Id: "1",

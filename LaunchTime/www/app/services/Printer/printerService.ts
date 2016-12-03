@@ -20,6 +20,16 @@ namespace Printer {
         PrinterStatus: string = "Disconnected";
 
 
+        RefreshStatus(): angular.IPromise<string> {
+            var _self = this;
+            var print = this._printer;
+            return this.$q(function (resolve, reject) {
+                print.RefreshStatus().done(() => { })
+                    .fail((msg) => _self.toastr.success(msg, "Błąd statusu"));
+            });
+        }
+
+
         PrintOrder(order: Models.Order): angular.IPromise<string> {
             var _self = this;
             var print = this._printer;
@@ -70,21 +80,23 @@ namespace Printer {
         printSummary(print: Printer, order: Models.Order): JQueryPromise<string> {
             var deffer = $.Deferred<string>();
             var _self = this;
-            print.SetFont(FontStyle.Width2).done(() =>
-                print.SetInvertedColors(true).done(() =>
-                    print.PrintText("SUMA:   123,00zl\r\n").done(() =>
-                        print.SetInvertedColors(false).done(() =>
-                            print.SetFont(FontStyle.Small ).done(() =>
-                                print.SetAlignment(TextAlignment.Center).done(()=>
-                                print.PrintText("ADRES ZAMÓWIENIA:\r\n").done(() =>
-                                    print.SetFont(FontStyle.Height2).done(() =>
-                                        print.PrintText(order.Client.Name + "\r\n" + order.Client.Address + "\r\n").done(() =>
-                                            print.SetFont(FontStyle.Small).done(() =>
-                                                print.PrintText("NUMER TELEFONU:\r\n").done(() =>
-                                                    print.SetFont(FontStyle.Height2 | FontStyle.Bold).done(() =>
-                                                        print.PrintText(order.Client.Phone+"\r\n\r\n\r\n\r\n").done(() =>
-                                                                deffer.resolve()
-                                                            ))))))))))))).fail((msg) => deffer.reject(msg));
+            print.SetFont(FontStyle.Small).done(() =>
+                print.PrintText("++++++++++++++++++++++++++++++++++++++++++\r\n").done(() =>
+                    print.SetFont(FontStyle.Width2).done(() =>
+                        print.PrintText("SUMA:   123,00zl\r\n").done(() =>
+                            print.SetFont(FontStyle.Small).done(() =>
+                                print.PrintText("++++++++++++++++++++++++++++++++++++++++++\r\n").done(() =>
+                                    print.SetFont(FontStyle.Small).done(() =>
+                                        print.SetAlignment(TextAlignment.Center).done(() =>
+                                            print.PrintText("ADRES ZAMÓWIENIA:\r\n").done(() =>
+                                                print.SetFont(FontStyle.Height2).done(() =>
+                                                    print.PrintText(order.Client.Name + "\r\n" + order.Client.Address + "\r\n").done(() =>
+                                                        print.SetFont(FontStyle.Small).done(() =>
+                                                            print.PrintText("NUMER TELEFONU:\r\n").done(() =>
+                                                                print.SetFont(FontStyle.Height2 | FontStyle.Bold).done(() =>
+                                                                    print.PrintText(order.Client.Phone + "\r\n\r\n\r\n\r\n\r\n").done(() =>
+                                                                        deffer.resolve()
+                                                                    ))))))))))))))).fail((msg) => deffer.reject(msg));
             return deffer.promise();
         }
 

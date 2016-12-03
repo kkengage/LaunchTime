@@ -11,6 +11,14 @@ var Printer;
             this._printer = new Printer.Printer();
             this.toastr = toastr;
         }
+        PrinterService.prototype.RefreshStatus = function () {
+            var _self = this;
+            var print = this._printer;
+            return this.$q(function (resolve, reject) {
+                print.RefreshStatus().done(function () { })
+                    .fail(function (msg) { return _self.toastr.success(msg, "Błąd statusu"); });
+            });
+        };
         PrinterService.prototype.PrintOrder = function (order) {
             var _self = this;
             var print = this._printer;
@@ -85,20 +93,24 @@ var Printer;
         PrinterService.prototype.printSummary = function (print, order) {
             var deffer = $.Deferred();
             var _self = this;
-            print.SetFont(Printer.FontStyle.Width2).done(function () {
-                return print.SetInvertedColors(true).done(function () {
-                    return print.PrintText("SUMA:   123,00zl\r\n").done(function () {
-                        return print.SetInvertedColors(false).done(function () {
+            print.SetFont(Printer.FontStyle.Small).done(function () {
+                return print.PrintText("++++++++++++++++++++++++++++++++++++++++++\r\n").done(function () {
+                    return print.SetFont(Printer.FontStyle.Width2).done(function () {
+                        return print.PrintText("SUMA:   123,00zl\r\n").done(function () {
                             return print.SetFont(Printer.FontStyle.Small).done(function () {
-                                return print.SetAlignment(Printer.TextAlignment.Center).done(function () {
-                                    return print.PrintText("ADRES ZAMÓWIENIA:\r\n").done(function () {
-                                        return print.SetFont(Printer.FontStyle.Height2).done(function () {
-                                            return print.PrintText(order.Client.Name + "\r\n" + order.Client.Address + "\r\n").done(function () {
-                                                return print.SetFont(Printer.FontStyle.Small).done(function () {
-                                                    return print.PrintText("NUMER TELEFONU:\r\n").done(function () {
-                                                        return print.SetFont(Printer.FontStyle.Height2 | Printer.FontStyle.Bold).done(function () {
-                                                            return print.PrintText(order.Client.Phone + "\r\n\r\n\r\n\r\n").done(function () {
-                                                                return deffer.resolve();
+                                return print.PrintText("++++++++++++++++++++++++++++++++++++++++++\r\n").done(function () {
+                                    return print.SetFont(Printer.FontStyle.Small).done(function () {
+                                        return print.SetAlignment(Printer.TextAlignment.Center).done(function () {
+                                            return print.PrintText("ADRES ZAMÓWIENIA:\r\n").done(function () {
+                                                return print.SetFont(Printer.FontStyle.Height2).done(function () {
+                                                    return print.PrintText(order.Client.Name + "\r\n" + order.Client.Address + "\r\n").done(function () {
+                                                        return print.SetFont(Printer.FontStyle.Small).done(function () {
+                                                            return print.PrintText("NUMER TELEFONU:\r\n").done(function () {
+                                                                return print.SetFont(Printer.FontStyle.Height2 | Printer.FontStyle.Bold).done(function () {
+                                                                    return print.PrintText(order.Client.Phone + "\r\n\r\n\r\n\r\n\r\n").done(function () {
+                                                                        return deffer.resolve();
+                                                                    });
+                                                                });
                                                             });
                                                         });
                                                     });
