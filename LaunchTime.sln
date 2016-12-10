@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "LaunchTime", "LaunchTime\LaunchTime.jsproj", "{C84401FA-6679-4423-B41A-1FE0F4474DD5}"
+Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "LunchTime", "LunchTime\LunchTime.jsproj", "{C84401FA-6679-4423-B41A-1FE0F4474DD5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4E402B59-20A3-4EFA-8BC8-59C7DD2C360C}"
 	ProjectSection(SolutionItems) = preProject

@@ -1,0 +1,11 @@
+{
+     "android": {
+         "release": {
+             "keystore": "security\\lt.keystore",
+             "storePassword": "pwd123",
+             "alias": "Lunchtime",
+             "password" : "pwd123",
+             "keystoreType": ""
+         }
+     }
+ }
