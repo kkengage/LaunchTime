@@ -4,13 +4,18 @@
     <title></title>
 </head>
 <body>
-    <input type="text" ng-model="txt" />
-    <div>Main View {{txt}}</div>
+
+    <div>Server {{serverStatus}}</div>
     <div>Signal {{signal}}</div>
-    <div>STATUS {{status}}</div>
-    <div ng-click="GetStatus()">STATUS</div>
+    <div>Drukarka: {{status}}</div>
+    <div>Status: {{printerStatus}}</div>
+    <button ng-click="GetStatus()">
+        Pobierz status drukarki
+    </button>
     <br />
-    <br />
+    
+    ZAMOWIENIA:
+    <hr />
     <table class="practiceTable">
         <thead>
             <tr>
@@ -28,19 +33,14 @@
                 <td>{{o.Hour}}</td>
                 <td>{{o.Id}}</td>
                 <td>{{o.Accepted}}</td>
-                <td><md-button ng-hide="o.accepted" ng-click="acceptOrder(o)" class="md-primary md-raised">AKCEPTUJ</md-button></td>
+                <td><button ng-hide="o.accepted" ng-click="acceptOrder(o)" class="md-primary md-raised">AKCEPTUJ</button></td>
             </tr>
         </tbody>
     </table>
-    <br />
-    <br />
-    <div ng-click="print()" >TESTUJ!</div>
-    <br />
     <hr />
-    Status: {{printerStatus}}
-    <div>LOGIN: {{logged}}</div>
-    <!--<div ng-click="login()">TESTUJ LOG!</div>-->
-    <div ng-click="test()">TESTUJ ODP!</div>
-    <div ng-click="settings()">USTAWIENIA</div>
+    <br />
+    <br />
+
+    <button ng-click="settings()">USTAWIENIA</button>
 </body>
 </html>

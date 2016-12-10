@@ -8,8 +8,7 @@
 var MainViewController = (function () {
     function MainViewController($scope, $state, printerService, authService, $injector, ordersService) {
         this.ordersService = ordersService;
-        $scope.txt = "EEEE";
-        $scope.logged = "none";
+        $scope.serverStatus = "nie połączono";
         $scope.signal = 0;
         $scope.status = Printer.Printer.Status;
         $scope.printerStatus = printerService.PrinterStatus;
@@ -20,8 +19,10 @@ var MainViewController = (function () {
                 $scope.logged = val ? "zalogowany!" : "blad";
             });
         };
-        $scope.test = function () {
+        $scope.getOrders = function () {
+            $scope.serverStatus = "Łączenie...";
             ordersService.GetNewOrders().then(function (orders) {
+                $scope.serverStatus = "OK";
                 orders.forEach(function (o) {
                     $scope.orders.push(o);
                 });
@@ -34,43 +35,44 @@ var MainViewController = (function () {
                     printerService.PrintOrder(order);
                 }
                 else {
-                    alert("ODRZUCONE");
+                    alert("Nie zaakceptowano");
                 }
             });
         };
-        setInterval(function () { $scope.status = Printer.Printer.Status; }, 500);
+        setInterval(function () { $scope.getOrders(); }, 15000); // 15 sekund
+        $scope.getOrders();
         $scope.GetStatus = function () {
             printerService.RefreshStatus();
         };
-        $scope.print = function () {
-            printerService.PrintOrder({
-                Id: "1",
-                Date: "2016-01-01",
-                Hour: "14:00",
-                Accepted: true,
-                Client: {
-                    Address: "Tarnów, Brodzińskiego 17",
-                    Name: "Krzysztof K",
-                    Phone: "790-882-385"
-                },
-                Items: [
-                    {
-                        Id: "111",
-                        Name: "CocaCola",
-                        Price: 4,
-                        Quantity: 2
-                    },
-                    {
-                        Id: "222",
-                        Name: "Pizza margerita",
-                        Price: 25,
-                        Quantity: 1
-                    }
-                ]
-            });
-        };
+        //$scope.print = function () {
+        //    printerService.PrintOrder(<Models.Order>{
+        //        Id: "1",
+        //        Date: "2016-01-01",
+        //        Hour: "14:00",
+        //        Accepted: true,
+        //        Client: <Models.Client>{
+        //            Address: "Tarnów, Brodzińskiego 17",
+        //            Name: "Krzysztof K",
+        //            Phone: "790-882-385"
+        //        },
+        //        Items: [
+        //            <Models.Item>{
+        //                Id: "111",
+        //                Name: "CocaCola",
+        //                Price: 4,
+        //                Quantity: 2
+        //            },
+        //            <Models.Item>{
+        //                Id: "222",
+        //                Name: "Pizza margerita",
+        //                Price: 25,
+        //                Quantity: 1
+        //            }
+        //        ]
+        //    });
+        //}
         $scope.settings = function () {
-            $state.go("settings");
+            $state.go("settingsView");
         };
     }
     MainViewController.$inject = ["$scope", "$state", "PrinterService", "AuthService", "$injector", "OrdersService"];

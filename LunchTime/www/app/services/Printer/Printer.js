@@ -3,31 +3,6 @@
 /// <reference path="../../../../typings/serial/serial.d.ts" />
 var Printer;
 (function (Printer_1) {
-    //#region Style Enums
-    (function (TextAlignment) {
-        TextAlignment[TextAlignment["Left"] = 0] = "Left";
-        TextAlignment[TextAlignment["Center"] = 1] = "Center";
-        TextAlignment[TextAlignment["Right"] = 2] = "Right";
-    })(Printer_1.TextAlignment || (Printer_1.TextAlignment = {}));
-    var TextAlignment = Printer_1.TextAlignment;
-    (function (Underline) {
-        Underline[Underline["None"] = 48] = "None";
-        Underline[Underline["Thin"] = 49] = "Thin";
-        Underline[Underline["Thick"] = 50] = "Thick";
-    })(Printer_1.Underline || (Printer_1.Underline = {}));
-    var Underline = Printer_1.Underline;
-    (function (FontStyle) {
-        FontStyle[FontStyle["Normal"] = 0] = "Normal";
-        // Czcionka 9x17 zamiast 12x24 domyslnej
-        FontStyle[FontStyle["Small"] = 1] = "Small";
-        FontStyle[FontStyle["Bold"] = 8] = "Bold";
-        // Poszerzona x 2
-        FontStyle[FontStyle["Height2"] = 16] = "Height2";
-        // Podwyzszona x 2
-        FontStyle[FontStyle["Width2"] = 32] = "Width2";
-    })(Printer_1.FontStyle || (Printer_1.FontStyle = {}));
-    var FontStyle = Printer_1.FontStyle;
-    //#endregion
     // Rozszerza funckjonalność cache'a angularowego o expiry time
     var Printer = (function () {
         //#region Prywatne zmienne i metody do zarządzania drukarką i portem (open, close..) i stylami czcionki
@@ -55,7 +30,7 @@ var Printer;
                 this.printer()
                     .done(function (printer) {
                     _self.prnt = printer;
-                    _self.SetAlignment(TextAlignment.Left).done(function () {
+                    _self.SetAlignment(Printer_1.TextAlignment.Left).done(function () {
                         return _self.printLogo();
                     });
                 })

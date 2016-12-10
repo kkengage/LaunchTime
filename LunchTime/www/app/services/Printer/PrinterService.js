@@ -2,13 +2,14 @@
 /// <reference path="printer.ts" />
 /// <reference path="../../../../typings/tsd.d.ts" />
 /// <reference path="../../appmain/app.ts" />
+/// <reference path="printermoq.ts" />
 var Printer;
 (function (Printer) {
     var PrinterService = (function () {
         function PrinterService($q, toastr) {
             this.$q = $q;
             this.PrinterStatus = "Disconnected";
-            this._printer = new Printer.Printer();
+            this._printer = new Printer.PrinterMoq();
             this.toastr = toastr;
         }
         PrinterService.prototype.RefreshStatus = function () {

@@ -14,25 +14,25 @@ class SettingsViewController {
     constructor($scope, $state) {
        
         $scope.save = function () {
-            $state.go("main");
+            $state.go("mainView");
         }
 
         $scope.cancel = function () {
-            $state.go("main");
+            $state.go("mainView");
         }
 
 
     }
 }
 
-app.controller('settingsViewController', MainViewController);
+app.controller('settingsViewController', SettingsViewController);
 
 
 app.config(function ($stateProvider) {
     $stateProvider
         .state('settingsView', {
             url: '/settings',
-            templateUrl: 'app/views/main/settings.html',
+            templateUrl: 'app/views/settings/settings.html',
             controller: 'settingsViewController'
         });
 });

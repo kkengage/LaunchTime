@@ -2,6 +2,7 @@
 /// <reference path="printer.ts" />
 /// <reference path="../../../../typings/tsd.d.ts" />
 /// <reference path="../../appmain/app.ts" />
+/// <reference path="printermoq.ts" />
 
 
 namespace Printer {
@@ -9,11 +10,11 @@ namespace Printer {
     export class PrinterService {
 
         static $inject = ['$q', 'toastr'];
-        private _printer: Printer;
+        private _printer: IPrinter;
         private toastr: Toastr;
 
         constructor(private $q: angular.IQService, toastr: Toastr) {
-            this._printer = new Printer();
+            this._printer = new PrinterMoq();
             this.toastr = toastr;
         }
 
@@ -60,7 +61,7 @@ namespace Printer {
             });
         }
 
-        printItems(print: Printer, order: Models.Order, id: number, deffer: JQueryDeferred<string> = null): JQueryPromise<string> {
+        printItems(print: IPrinter, order: Models.Order, id: number, deffer: JQueryDeferred<string> = null): JQueryPromise<string> {
             if (deffer == null) deffer = $.Deferred<string>();
             var _self = this;
 
@@ -77,7 +78,7 @@ namespace Printer {
             return null;
         }
 
-        printSummary(print: Printer, order: Models.Order): JQueryPromise<string> {
+        printSummary(print: IPrinter, order: Models.Order): JQueryPromise<string> {
             var deffer = $.Deferred<string>();
             var _self = this;
             print.SetFont(FontStyle.Small).done(() =>

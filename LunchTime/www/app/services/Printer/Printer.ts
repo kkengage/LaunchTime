@@ -5,33 +5,8 @@
 namespace Printer {
     declare var serial;
 
-    //#region Style Enums
-    export enum TextAlignment {
-        Left = 0,
-        Center = 1,
-        Right = 2
-    }
-
-    export enum Underline {
-        None = 48,
-        Thin = 49,
-        Thick = 50
-    }
-
-    export enum FontStyle {
-        Normal = 0,
-        // Czcionka 9x17 zamiast 12x24 domyslnej
-        Small = 1,
-        Bold = 8,
-        // Poszerzona x 2
-        Height2 = 16,
-        // Podwyzszona x 2
-        Width2 = 32
-    }
-    //#endregion
-
     // Rozszerza funckjonalność cache'a angularowego o expiry time
-    export class Printer implements D.IDisposable {
+    export class Printer implements IPrinter,D.IDisposable {
 
         public static Status: string = "NOT INITIALIZED";
 
